@@ -88,7 +88,7 @@ const Hero = () => {
 				</div>
 				<div className="md:w-1/2">
 					<img
-						src="/store-image.jpg"
+						src="/shop.png"
 						alt="WalBy Store"
 						className="rounded-lg shadow-xl"
 					/>
@@ -100,10 +100,10 @@ const Hero = () => {
 
 const FeaturedProducts = () => {
 	const products = [
-		{ id: 1, name: 'Smart TV', price: 299.99, image: '/tv.jpg' },
-		{ id: 2, name: 'Lawn Mower', price: 189.99, image: '/lawnmower.jpg' },
-		{ id: 3, name: 'Blender Set', price: 49.99, image: '/blender.jpg' },
-		{ id: 4, name: 'Camping Tent', price: 79.99, image: '/tent.jpg' },
+		{ id: 1, name: 'Smart TV', price: 299.99, image: '/tv.png' },
+		{ id: 2, name: 'Lawn Mower', price: 189.99, image: '/mower.png' },
+		{ id: 3, name: 'Blender Set', price: 49.99, image: '/blender.png' },
+		{ id: 4, name: 'Camping Tent', price: 79.99, image: '/tent.png' },
 	];
 
 	return (
@@ -131,10 +131,10 @@ const FeaturedProducts = () => {
 
 const Categories = () => {
 	const categories = [
-		{ name: 'Electronics', image: '/electronics.jpg' },
-		{ name: 'Groceries', image: '/groceries.jpg' },
-		{ name: 'Home & Garden', image: '/home-garden.jpg' },
-		{ name: 'Toys', image: '/toys.jpg' },
+		{ name: 'Electronics', image: '/walmart.png' },
+		{ name: 'Groceries', image: '/walmart.png' },
+		{ name: 'Home & Garden', image: '/walmart.png' },
+		{ name: 'Toys', image: '/walmart.png' },
 	];
 
 	return (
@@ -144,7 +144,7 @@ const Categories = () => {
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 					{categories.map((category) => (
 						<div key={category.name} className="relative overflow-hidden rounded-lg shadow-md">
-							<img src={category.image} alt={category.name} className="w-full h-64 object-cover" />
+							<img src={category.image} alt={category.name} className="w-full h-34 object-cover" />
 							<div className="absolute inset-0 bg-blue-700 bg-opacity-40 flex items-center justify-center">
 								<h3 className="text-white text-2xl font-semibold">{category.name}</h3>
 							</div>
@@ -254,16 +254,16 @@ const AiAssistant = () => {
 	return (
 		<div className="fixed bottom-4 right-4 z-50">
 			{isOpen ? (
-				<div className="bg-white rounded-lg shadow-xl overflow-hidden" style={{ width: '350px', height: '500px' }}>
+				<div className="bg-white rounded-lg shadow-xl overflow-hidden" style={{ width: '450px', height: '600px' }}>
 					<div className="p-4 bg-blue-700 text-white flex justify-between items-center">
 						<h3 className="font-semibold">WalBy Assistant</h3>
 						<button onClick={() => setIsOpen(false)} className="text-white hover:text-yellow-400">
 							Close
 						</button>
 					</div>
-					<div className="p-4">
-						<TextToSpeech />
-					</div>
+
+					<TextToSpeech />
+
 				</div>
 			) : (
 				<button
