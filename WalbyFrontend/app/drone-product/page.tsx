@@ -1,12 +1,12 @@
+"use client"
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { sendTextToOpenAi } from "@/utils/sendTextToOpenai";
 
 const DroneProductPage: React.FC = () => {
     const [aiResponse, setAiResponse] = useState("");
     const [isListening, setIsListening] = useState(true);
     const [language, setLanguage] = useState("en-US");
-    const router = useRouter();
+
 
     useEffect(() => {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -66,8 +66,9 @@ const DroneProductPage: React.FC = () => {
         speakText(inactivityPrompt);
     };
 
+
     const handleARClick = () => {
-        window.open('https://google.com', '_blank');  // Replace with your actual AR demo link
+        window.open('https://technopia-vision-a9psuuxup-chiragsingh1711.vercel.app/', '_blank');
     };
 
     return (
@@ -75,19 +76,19 @@ const DroneProductPage: React.FC = () => {
             <h1 className="text-3xl font-bold mb-6">Premium Drone X1000</h1>
             <div className="flex flex-wrap">
                 <div className="w-full md:w-1/2 pr-4">
-                    <img src="/drone-image.jpg" alt="Drone X1000" className="w-full h-auto rounded-lg shadow-lg" />
+                    <img src="/drone.jpeg" alt="Drone X1000" className="w-full h-auto rounded-lg shadow-lg" />
                 </div>
                 <div className="w-full md:w-1/2 mt-4 md:mt-0">
                     <p className="text-xl mb-4">{aiResponse}</p>
                     <button onClick={handleARClick} className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">
                         View in AR
                     </button>
-                    <button onClick={() => router.push('/')} className="ml-4 bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition duration-300">
+                    <button className="ml-4 bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition duration-300">
                         Back to Home
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
