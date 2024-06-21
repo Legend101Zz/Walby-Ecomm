@@ -260,6 +260,7 @@ const AiAssistant = () => {
 						<button onClick={() => setIsOpen(false)} className="text-white hover:text-yellow-400">
 							Close
 						</button>
+
 					</div>
 
 					<TextToSpeech />
