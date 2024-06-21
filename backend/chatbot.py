@@ -12,6 +12,8 @@ from langchain.vectorstores import FAISS
 from langchain.document_loaders import DataFrameLoader
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
+from mlxtend.frequent_patterns import apriori, association_rules
+
 
 # Load environment variables from .env
 load_dotenv()
@@ -96,3 +98,41 @@ qa = RetrievalQA.from_chain_type(
         "memory": memory}
 )
 
+from mlxtend.frequent_patterns import apriori, association_rules
+import pandas as pd
+
+# Example data
+data = [
+    ['user1', 'product1'],
+    ['user1', 'product2'],
+    ['user2', 'product1'],
+    ['user2', 'product3'],
+    # Add more user-product interactions
+]
+
+# Convert to DataFrame
+df = pd.DataFrame(data, columns=['user_id', 'product_id'])
+
+# Create a basket format
+basket = df.groupby(['user_id', 'product_id']).size().unstack().reset_index().fillna(0).set_index('user_id')
+basket = basket.applymap(lambda x: 1 if x > 0 else 0)
+
+# Apply Apriori
+frequent_itemsets = apriori(basket, min_support=0.1, use_colnames=True)
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1)
+
+# function to get recommendations
+def get_recommendations(user_basket, rules):
+    recommendations = []
+    for item in user_basket:
+        for index, row in rules.iterrows():
+            if item in row['antecedents']:
+                recommendations.append(list(row['consequents'])[0])
+    return recommendations
+
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    user_id = request.json.get('user_id')
+    user_basket = [interaction.product_id for interaction in Interaction.query.filter_by(user_id=user_id).all()]
+    recommendations = get_recommendations(user_basket, rules)
+    return jsonify({'recommendations': recommendations}), 200

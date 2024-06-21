@@ -1,4 +1,5 @@
 from datetime import datetime
+from transformers import pipeline
 
 # Interaction model
 class Interaction(db.Model):
@@ -27,6 +28,20 @@ def interact():
     db.session.commit()
 
     return jsonify({'message': 'Interaction recorded successfully'}), 200
+
+# Initialize sentiment analysis model
+sentiment_model = pipeline('sentiment-analysis')
+
+# Analyze user sentiment
+@app.route('/analyze_sentiment', methods=['POST'])
+def analyze_sentiment():
+    text = request.json.get('text')
+    result = sentiment_model(text)[0]
+    sentiment = result['label']
+    score = result['score']
+
+    # Store sentiment analysis result (you can also associate it with a specific interaction)
+    return jsonify({'sentiment': sentiment, 'score': score}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

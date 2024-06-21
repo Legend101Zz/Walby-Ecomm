@@ -6,3 +6,4 @@ tiktoken==0.5.2
 pydantic==2.5.3
 openai==1.6.1
 faiss-cpu==1.7.4
+mlxtend.frequent_patterns
