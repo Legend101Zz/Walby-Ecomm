@@ -3,7 +3,6 @@ import React, { FormEvent, useContext, useState, useEffect, useRef } from "react
 import { AppContext } from "../app/context/IsPlayingContext";
 import { sendTextToOpenAi } from "@/utils/sendTextToOpenai";
 import { ChatBotCanvas } from "./ChatBotCanvas";
-import { useRouter } from 'next/router';
 import DroneProduct from "./DroneProduct";
 
 interface TextToSpeechProps {
@@ -23,7 +22,6 @@ export const TextToSpeech: React.FC<TextToSpeechProps> = ({ onNavigateToDrone })
   const [showDroneProduct, setShowDroneProduct] = useState(false);
   const [continuousListening, setContinuousListening] = useState(false);
 
-  const router = useRouter();
 
   const synth = useRef(window.speechSynthesis);
   const recognition = useRef<SpeechRecognition | null>(null);
@@ -72,7 +70,7 @@ export const TextToSpeech: React.FC<TextToSpeechProps> = ({ onNavigateToDrone })
   }, [language, continuousListening]);
 
   const handleARClick = () => {
-    window.open('https://google.com', '_blank');  // Replace with your actual AR demo link
+    window.open('https://technopia-vision-a9psuuxup-chiragsingh1711.vercel.app/', '_blank');
   };
 
   const speakText = (textToSpeak: string) => {
