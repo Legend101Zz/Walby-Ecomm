@@ -3,8 +3,14 @@ import React, { FormEvent, useContext, useState, useEffect, useRef } from "react
 import { AppContext } from "../app/context/IsPlayingContext";
 import { sendTextToOpenAi } from "@/utils/sendTextToOpenai";
 import { ChatBotCanvas } from "./ChatBotCanvas";
+import { useRouter } from 'next/router';
+import DroneProduct from "./DroneProduct";
 
-export const TextToSpeech: React.FC = () => {
+interface TextToSpeechProps {
+  onNavigateToDrone: () => void;
+}
+
+export const TextToSpeech: React.FC<TextToSpeechProps> = ({ onNavigateToDrone }) => {
   const [userText, setUserText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { isPlaying, setIsPlaying } = useContext(AppContext);
@@ -14,27 +20,60 @@ export const TextToSpeech: React.FC = () => {
   const [playing, setPlaying] = useState(false);
   const [language, setLanguage] = useState("en-US");
   const [isListening, setIsListening] = useState(false);
+  const [showDroneProduct, setShowDroneProduct] = useState(false);
+  const [continuousListening, setContinuousListening] = useState(false);
+
+  const router = useRouter();
 
   const synth = useRef(window.speechSynthesis);
   const recognition = useRef<SpeechRecognition | null>(null);
 
+  const languageOptions = [
+    { value: "en-US", label: "English" },
+    { value: "es-ES", label: "Español" },
+    { value: "fr-FR", label: "Français" },
+    { value: "de-DE", label: "Deutsch" },
+    { value: "it-IT", label: "Italiano" },
+    { value: "ja-JP", label: "日本語" },
+    { value: "ko-KR", label: "한국어" },
+    { value: "zh-CN", label: "中文 (简体)" },
+    { value: "hi-IN", label: "हिन्दी" },
+  ];
+
+  useEffect(() => {
+    if (continuousListening) {
+      startListening();
+    } else {
+      stopListening();
+    }
+  }, [continuousListening]);
+
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       recognition.current = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.current.continuous = false;
+      recognition.current.continuous = true;
+      recognition.current.interimResults = false;
       recognition.current.lang = language;
 
-      recognition.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
+      recognition.current.onresult = (event: any) => {
+        const transcript = event.results[event.results.length - 1][0].transcript;
         setUserText(transcript);
         handleUserInput(transcript);
       };
 
       recognition.current.onend = () => {
-        setIsListening(false);
+        if (continuousListening) {
+          startListening();
+        } else {
+          setIsListening(false);
+        }
       };
     }
-  }, [language]);
+  }, [language, continuousListening]);
+
+  const handleARClick = () => {
+    window.open('https://google.com', '_blank');  // Replace with your actual AR demo link
+  };
 
   const speakText = (textToSpeak: string) => {
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
@@ -51,29 +90,28 @@ export const TextToSpeech: React.FC = () => {
       setIsPlaying(false);
       setSpeak(false);
       setPlaying(false);
+      if (continuousListening) {
+        startListening();
+      }
     };
   };
 
   const handleUserInput = async (input: string) => {
     setIsLoading(true);
     try {
-      const message = await sendTextToOpenAi(input, language);
-      speakText(message);
+      const message = await sendTextToOpenAi(input, language, false, "Raj");
+      if (message.includes("SHOW_DRONE_PRODUCT")) {
+        onNavigateToDrone();
+      } else {
+        speakText(message);
+      }
     } catch (error) {
-      let errorMessage = "An error occurred";
-      if (error instanceof Error) errorMessage = error.message;
-      console.log(errorMessage);
-      alert(errorMessage);
+      console.error("Error:", error);
+      speakText("I'm sorry, I encountered an error. Can you please repeat that?");
     } finally {
       setIsLoading(false);
       setUserText("");
     }
-  };
-
-  const handleUserText = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (userText === "") return alert("Please enter text");
-    handleUserInput(userText);
   };
 
   const startListening = () => {
@@ -90,6 +128,13 @@ export const TextToSpeech: React.FC = () => {
     }
   };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (userText.trim() !== "") {
+      handleUserInput(userText);
+    }
+  };
+
   return (
     <div className="relative h-full w-full">
       <ChatBotCanvas
@@ -102,10 +147,7 @@ export const TextToSpeech: React.FC = () => {
         setPlaying={setPlaying}
       />
       <div className="absolute top-0 left-0 w-full z-50 p-4 bg-black bg-opacity-50">
-        <form
-          onSubmit={handleUserText}
-          className="flex justify-center items-center space-x-2"
-        >
+        <form onSubmit={handleSubmit} className="flex justify-center items-center space-x-2">
           <input
             type="text"
             value={userText}
@@ -123,32 +165,34 @@ export const TextToSpeech: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={isListening ? stopListening : startListening}
-            className={`p-2 rounded-lg transition duration-300 ${isListening
+            onClick={() => setContinuousListening(!continuousListening)}
+            className={`p-2 rounded-lg transition duration-300 ${continuousListening
               ? "bg-red-600 text-white hover:bg-red-700"
               : "bg-green-600 text-white hover:bg-green-700"
               }`}
           >
-            {isListening ? "Stop" : "Speak"}
+            {continuousListening ? "Stop Listening" : "Start Listening"}
           </button>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
             className="bg-blue-600 text-white p-2 rounded-lg"
           >
-            <option value="en-US">English</option>
-            <option value="es-ES">Español</option>
-            <option value="fr-FR">Français</option>
-            <option value="de-DE">Deutsch</option>
-            <option value="it-IT">Italiano</option>
-            <option value="ja-JP">日本語</option>
-            <option value="ko-KR">한국어</option>
-            <option value="zh-CN">中文 (简体)</option>
-            <option value="hi-IN">हिन्दी</option>
-
+            {languageOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </form>
       </div>
+      {showDroneProduct && (
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-50">
+          <DroneProduct onARClick={handleARClick} />
+        </div>
+      )}
     </div>
   );
 };
+
+export default TextToSpeech;

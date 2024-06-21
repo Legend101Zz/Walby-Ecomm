@@ -10,12 +10,14 @@
 
 // pages/index.js
 "use client";
+import { useRouter } from 'next/router';
 import { IsPlayingProvider } from "./context/IsPlayingContext";
 import { useState } from "react";
 import Link from 'next/link';
 import { TextToSpeech } from "@/components/TextToSpeech";
 
 export default function Home() {
+
 	return (
 		<IsPlayingProvider>
 			<div className="min-h-screen bg-gray-50">
@@ -48,14 +50,14 @@ const Header = () => {
 					<Link href="/contact" className="hover:text-yellow-400">Contact</Link>
 				</nav>
 				<div className="flex items-center space-x-4">
-					<Link href="/cart" className="hover:text-yellow-400">
-						{/* Cart Icon */}
+					<Link href="/cart" className="text-yellow-400">
+						Welcome Raj :)
 					</Link>
 					<button
 						className="md:hidden hover:text-yellow-400"
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
 					>
-						{/* Menu Icon */}
+
 					</button>
 				</div>
 			</div>
@@ -86,9 +88,9 @@ const Hero = () => {
 						Start Shopping
 					</button>
 				</div>
-				<div className="md:w-1/2">
+				<div className="md:w-1/4">
 					<img
-						src="/shop.png"
+						src="/walmart.png"
 						alt="WalBy Store"
 						className="rounded-lg shadow-xl"
 					/>
@@ -250,6 +252,13 @@ const Footer = () => {
 
 const AiAssistant = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const router = useRouter();
+
+
+	const handleNavigateToDrone = () => {
+		router.push('/drone-product');
+	};
+
 
 	return (
 		<div className="fixed bottom-4 right-4 z-50">
@@ -263,7 +272,7 @@ const AiAssistant = () => {
 
 					</div>
 
-					<TextToSpeech />
+					<TextToSpeech onNavigateToDrone={handleNavigateToDrone} />
 
 				</div>
 			) : (
