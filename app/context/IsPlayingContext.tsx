@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, createContext, useState } from "react";
+import React, { createContext, useState, ReactNode } from 'react';
 
 interface AppContextType {
 	isPlaying: boolean;
@@ -8,10 +8,14 @@ interface AppContextType {
 
 export const AppContext = createContext<AppContextType>({
 	isPlaying: false,
-	setIsPlaying: () => {},
+	setIsPlaying: () => { },
 });
 
-export const IsPlayingProvider = ({ children }: { children: ReactNode }) => {
+interface IsPlayingProviderProps {
+	children: ReactNode;
+}
+
+export const IsPlayingProvider: React.FC<IsPlayingProviderProps> = ({ children }) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 
 	return (

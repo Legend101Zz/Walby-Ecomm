@@ -1,10 +1,4 @@
-// pages/index.js
-"use client";
-import { IsPlayingProvider } from "./context/IsPlayingContext";
-import { useState } from "react";
-// components/Header.js
 
-import Link from 'next/link';
 // import Header from "@/components/Header";
 // import Hero from "@/components/Hero";
 // import FeaturedProducts from "@/components/FeaturedProducts";
@@ -13,6 +7,13 @@ import Link from 'next/link';
 // import Newsletter from "@/components/Newsletter";
 // import Footer from "@/components/Footer";
 // import AiAssistant from "@/components/AiAssistant";
+
+// pages/index.js
+"use client";
+import { IsPlayingProvider } from "./context/IsPlayingContext";
+import { useState } from "react";
+import Link from 'next/link';
+import { TextToSpeech } from "@/components/TextToSpeech";
 
 export default function Home() {
 	return (
@@ -31,73 +32,64 @@ export default function Home() {
 	);
 }
 
-
-
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	return (
-		<header className="bg-white shadow-md sticky top-0 z-50">
+		<header className="bg-blue-700 text-white shadow-md sticky top-0 z-50">
 			<div className="container mx-auto px-4 py-4 flex justify-between items-center">
-				<Link href="/" className="text-2xl font-bold text-indigo-600">
-					FashionFusion
+				<Link href="/" className="text-2xl font-bold text-yellow-400">
+					WalBy Store
 				</Link>
 				<nav className="hidden md:flex space-x-8">
-					<Link href="/" className="text-gray-600 hover:text-indigo-600">Home</Link>
-					<Link href="/products" className="text-gray-600 hover:text-indigo-600">Shop</Link>
-					<Link href="/about" className="text-gray-600 hover:text-indigo-600">About</Link>
-					<Link href="/contact" className="text-gray-600 hover:text-indigo-600">Contact</Link>
+					<Link href="/" className="hover:text-yellow-400">Home</Link>
+					<Link href="/products" className="hover:text-yellow-400">Shop</Link>
+					<Link href="/services" className="hover:text-yellow-400">Services</Link>
+					<Link href="/contact" className="hover:text-yellow-400">Contact</Link>
 				</nav>
 				<div className="flex items-center space-x-4">
-					<Link href="/cart" className="text-gray-600 hover:text-indigo-600">
-						{/* <ShoppingCartIcon className="h-6 w-6" /> */}
+					<Link href="/cart" className="hover:text-yellow-400">
+						{/* Cart Icon */}
 					</Link>
 					<button
-						className="md:hidden text-gray-600 hover:text-indigo-600"
+						className="md:hidden hover:text-yellow-400"
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
 					>
-						{/* {isMenuOpen ? (
-							// <XIcon className="h-6 w-6" />
-						) : (
-							<MenuIcon className="h-6 w-6" />
-						)} */}
+						{/* Menu Icon */}
 					</button>
 				</div>
 			</div>
 			{isMenuOpen && (
-				<div className="md:hidden bg-white py-2">
-					<Link href="/" className="block px-4 py-2 text-gray-600 hover:bg-indigo-50">Home</Link>
-					<Link href="/products" className="block px-4 py-2 text-gray-600 hover:bg-indigo-50">Shop</Link>
-					<Link href="/about" className="block px-4 py-2 text-gray-600 hover:bg-indigo-50">About</Link>
-					<Link href="/contact" className="block px-4 py-2 text-gray-600 hover:bg-indigo-50">Contact</Link>
+				<div className="md:hidden bg-blue-600 py-2">
+					<Link href="/" className="block px-4 py-2 hover:bg-blue-500">Home</Link>
+					<Link href="/products" className="block px-4 py-2 hover:bg-blue-500">Shop</Link>
+					<Link href="/services" className="block px-4 py-2 hover:bg-blue-500">Services</Link>
+					<Link href="/contact" className="block px-4 py-2 hover:bg-blue-500">Contact</Link>
 				</div>
 			)}
 		</header>
 	);
 };
 
-
-
-// components/Hero.js
 const Hero = () => {
 	return (
-		<div className="bg-indigo-100 py-20">
+		<div className="bg-yellow-100 py-20">
 			<div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
 				<div className="md:w-1/2 mb-8 md:mb-0">
-					<h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-						Discover Your Style with FashionFusion
+					<h1 className="text-4xl md:text-5xl font-bold text-blue-700 mb-4">
+						Save Money. Live Better.
 					</h1>
 					<p className="text-xl text-gray-600 mb-6">
-						Explore our curated collection of trendy and sustainable fashion.
+						Discover amazing deals on everything you need, all in one place.
 					</p>
-					<button className="bg-indigo-600 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-indigo-700 transition duration-300">
-						Shop Now
+					<button className="bg-blue-700 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blue-800 transition duration-300">
+						Start Shopping
 					</button>
 				</div>
 				<div className="md:w-1/2">
 					<img
-						src="/hero-image.jpg"
-						alt="Fashion model"
+						src="/store-image.jpg"
+						alt="WalBy Store"
 						className="rounded-lg shadow-xl"
 					/>
 				</div>
@@ -106,20 +98,18 @@ const Hero = () => {
 	);
 };
 
-
-// components/FeaturedProducts.js
 const FeaturedProducts = () => {
 	const products = [
-		{ id: 1, name: 'Summer Dress', price: 59.99, image: '/product1.jpg' },
-		{ id: 2, name: 'Classic Denim Jacket', price: 89.99, image: '/product2.jpg' },
-		{ id: 3, name: 'Leather Handbag', price: 129.99, image: '/product3.jpg' },
-		{ id: 4, name: 'Sunglasses', price: 39.99, image: '/product4.jpg' },
+		{ id: 1, name: 'Smart TV', price: 299.99, image: '/tv.jpg' },
+		{ id: 2, name: 'Lawn Mower', price: 189.99, image: '/lawnmower.jpg' },
+		{ id: 3, name: 'Blender Set', price: 49.99, image: '/blender.jpg' },
+		{ id: 4, name: 'Camping Tent', price: 79.99, image: '/tent.jpg' },
 	];
 
 	return (
 		<section className="py-16">
 			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold text-center mb-8">Featured Products</h2>
+				<h2 className="text-3xl font-bold text-center mb-8 text-blue-700">Featured Products</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 					{products.map((product) => (
 						<div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -127,7 +117,7 @@ const FeaturedProducts = () => {
 							<div className="p-4">
 								<h3 className="text-lg font-semibold mb-2">{product.name}</h3>
 								<p className="text-gray-600 mb-4">${product.price.toFixed(2)}</p>
-								<button className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300">
+								<button className="w-full bg-yellow-400 text-blue-700 px-4 py-2 rounded-md hover:bg-yellow-500 transition duration-300">
 									Add to Cart
 								</button>
 							</div>
@@ -139,26 +129,23 @@ const FeaturedProducts = () => {
 	);
 };
 
-
-
-// components/Categories.js
 const Categories = () => {
 	const categories = [
-		{ name: 'Women', image: '/category-women.jpg' },
-		{ name: 'Men', image: '/category-men.jpg' },
-		{ name: 'Accessories', image: '/category-accessories.jpg' },
-		{ name: 'Shoes', image: '/category-shoes.jpg' },
+		{ name: 'Electronics', image: '/electronics.jpg' },
+		{ name: 'Groceries', image: '/groceries.jpg' },
+		{ name: 'Home & Garden', image: '/home-garden.jpg' },
+		{ name: 'Toys', image: '/toys.jpg' },
 	];
 
 	return (
 		<section className="bg-gray-100 py-16">
 			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold text-center mb-8">Shop by Category</h2>
+				<h2 className="text-3xl font-bold text-center mb-8 text-blue-700">Shop by Department</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 					{categories.map((category) => (
 						<div key={category.name} className="relative overflow-hidden rounded-lg shadow-md">
 							<img src={category.image} alt={category.name} className="w-full h-64 object-cover" />
-							<div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+							<div className="absolute inset-0 bg-blue-700 bg-opacity-40 flex items-center justify-center">
 								<h3 className="text-white text-2xl font-semibold">{category.name}</h3>
 							</div>
 						</div>
@@ -169,25 +156,22 @@ const Categories = () => {
 	);
 };
 
-
-
-// components/Testimonials.js
 const Testimonials = () => {
 	const testimonials = [
-		{ id: 1, name: 'Sarah M.', content: 'I love the quality and style of FashionFusion products. They always keep me looking trendy!' },
-		{ id: 2, name: 'John D.', content: 'Great customer service and fast shipping. I\'m a loyal customer for life!' },
-		{ id: 3, name: 'Emily L.', content: 'The AI assistant helped me find the perfect outfit for my event. Highly recommend!' },
+		{ id: 1, name: 'Sarah M.', content: 'WalBy always has the best prices on groceries. I save so much every week!' },
+		{ id: 2, name: 'John D.', content: 'The variety of products is amazing. I can find everything I need in one trip.' },
+		{ id: 3, name: 'Emily L.', content: 'Their online ordering and pickup service is so convenient. It saves me so much time!' },
 	];
 
 	return (
 		<section className="py-16">
 			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
+				<h2 className="text-3xl font-bold text-center mb-8 text-blue-700">What Our Customers Say</h2>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 					{testimonials.map((testimonial) => (
 						<div key={testimonial.id} className="bg-white rounded-lg shadow-md p-6">
-							{/* <p className="text-gray-600 mb-4">"{testimonial.content}"</p> */}
-							<p className="font-semibold">{testimonial.name}</p>
+							<p className="text-gray-600 mb-4">{testimonial.content}</p>
+							<p className="font-semibold text-blue-700">{testimonial.name}</p>
 						</div>
 					))}
 				</div>
@@ -196,25 +180,22 @@ const Testimonials = () => {
 	);
 };
 
-
-
-// components/Newsletter.js
 const Newsletter = () => {
 	return (
-		<section className="bg-indigo-600 py-16">
+		<section className="bg-blue-700 py-16">
 			<div className="container mx-auto px-4 text-center">
 				<h2 className="text-3xl font-bold text-white mb-4">Subscribe to Our Newsletter</h2>
-				<p className="text-indigo-100 mb-8">Get the latest updates on new products and special promotions.</p>
+				<p className="text-yellow-100 mb-8">Get the latest updates on new products and special promotions.</p>
 				<form className="max-w-md mx-auto">
 					<div className="flex">
 						<input
 							type="email"
 							placeholder="Enter your email"
-							className="flex-grow px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+							className="flex-grow px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
 						/>
 						<button
 							type="submit"
-							className="bg-indigo-800 text-white px-6 py-2 rounded-r-md hover:bg-indigo-900 transition duration-300"
+							className="bg-yellow-400 text-blue-700 px-6 py-2 rounded-r-md hover:bg-yellow-500 transition duration-300"
 						>
 							Subscribe
 						</button>
@@ -225,56 +206,47 @@ const Newsletter = () => {
 	);
 };
 
-
-
-// components/Footer.js
 const Footer = () => {
 	return (
-		<footer className="bg-gray-800 text-white py-8">
+		<footer className="bg-blue-800 text-white py-8">
 			<div className="container mx-auto px-4">
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 					<div>
 						<h3 className="text-lg font-semibold mb-4">About Us</h3>
-						<p className="text-gray-400">FashionFusion is your one-stop shop for trendy and sustainable fashion.</p>
+						<p className="text-gray-300">WalBy Store is your one-stop shop for all your everyday needs at unbeatable prices.</p>
 					</div>
 					<div>
 						<h3 className="text-lg font-semibold mb-4">Quick Links</h3>
 						<ul className="space-y-2">
-							<li><Link href="/products" className="text-gray-400 hover:text-white">Shop</Link></li>
-							<li><Link href="/about" className="text-gray-400 hover:text-white">About</Link></li>
-							<li><Link href="/contact" className="text-gray-400 hover:text-white">Contact</Link></li>
-							<li><Link href="/faq" className="text-gray-400 hover:text-white">FAQ</Link></li>
+							<li><Link href="/products" className="text-gray-300 hover:text-yellow-400">Shop</Link></li>
+							<li><Link href="/services" className="text-gray-300 hover:text-yellow-400">Services</Link></li>
+							<li><Link href="/contact" className="text-gray-300 hover:text-yellow-400">Contact</Link></li>
+							<li><Link href="/careers" className="text-gray-300 hover:text-yellow-400">Careers</Link></li>
 						</ul>
 					</div>
 					<div>
 						<h3 className="text-lg font-semibold mb-4">Follow Us</h3>
 						<div className="flex space-x-4">
-							<a href="#" className="text-gray-400 hover:text-white">Facebook</a>
-							<a href="#" className="text-gray-400 hover:text-white">Instagram</a>
-							<a href="#" className="text-gray-400 hover:text-white">Twitter</a>
+							<a href="#" className="text-gray-300 hover:text-yellow-400">Facebook</a>
+							<a href="#" className="text-gray-300 hover:text-yellow-400">Instagram</a>
+							<a href="#" className="text-gray-300 hover:text-yellow-400">Twitter</a>
 						</div>
 					</div>
 					<div>
 						<h3 className="text-lg font-semibold mb-4">Contact</h3>
-						<p className="text-gray-400">123 Fashion Street</p>
-						<p className="text-gray-400">New York, NY 10001</p>
-						<p className="text-gray-400">Email: info@fashionfusion.com</p>
-						<p className="text-gray-400">Phone: (123) 456-7890</p>
+						<p className="text-gray-300">123 Retail Road</p>
+						<p className="text-gray-300">Bentonville, AR 72712</p>
+						<p className="text-gray-300">Email: info@walbystore.com</p>
+						<p className="text-gray-300">Phone: (123) 456-7890</p>
 					</div>
 				</div>
-				<div className="border-t border-gray-700 mt-8 pt-8 text-center">
-					<p className="text-gray-400">&copy; 2024 FashionFusion. All rights reserved.</p>
+				<div className="border-t border-blue-700 mt-8 pt-8 text-center">
+					<p className="text-gray-300">&copy; 2024 WalBy Store. All rights reserved.</p>
 				</div>
 			</div>
 		</footer>
 	);
 };
-
-
-
-
-import { ChatBotCanvas } from "@/components/ChatBotCanvas";
-import { TextToSpeech } from "@/components/TextToSpeech";
 
 const AiAssistant = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -283,23 +255,20 @@ const AiAssistant = () => {
 		<div className="fixed bottom-4 right-4 z-50">
 			{isOpen ? (
 				<div className="bg-white rounded-lg shadow-xl overflow-hidden" style={{ width: '350px', height: '500px' }}>
-					<div className="p-4 bg-indigo-600 text-white flex justify-between items-center">
-						<h3 className="font-semibold">AI Fashion Assistant</h3>
-						<button onClick={() => setIsOpen(false)} className="text-white hover:text-indigo-200">
-							{/* <XIcon className="h-6 w-6" /> */}
+					<div className="p-4 bg-blue-700 text-white flex justify-between items-center">
+						<h3 className="font-semibold">WalBy Assistant</h3>
+						<button onClick={() => setIsOpen(false)} className="text-white hover:text-yellow-400">
+							Close
 						</button>
 					</div>
-					<div >
-						<ChatBotCanvas />
-					</div>
-					<div>
+					<div className="p-4">
 						<TextToSpeech />
 					</div>
 				</div>
 			) : (
 				<button
 					onClick={() => setIsOpen(true)}
-					className="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300"
+					className="bg-blue-700 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition duration-300"
 				>
 					Chat
 				</button>
